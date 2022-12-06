@@ -20,8 +20,8 @@ jobs:
           region: AWS_REGION
           environment_name: elastic-beanstalk-application
           application_name: maven-app
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
           s3_bucket_name: elasticbeanstalk-maven
           s3_file_path: maven-app.war
           ebs_version_label: 1.0.0
