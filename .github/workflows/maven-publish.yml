@@ -14,14 +14,24 @@ jobs:
           distribution: 'adopt'
       - name: Package with Maven
         run: mvn package
-      - name: Deploy to AWS Elastic Beanstalk
-        uses: Amraneze/aws-beanstalk-deploy@master
+        
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          region: us-east-2
-          environment_name: Githubactionsenvmavenwebapp-dev
-          application_name: githubactions_env_mavenwebapp
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-          s3_bucket_name: elasticbeanstalk-maven
-          s3_file_path: target/maven-web-app.war
-          ebs_version_label: 2.0.0
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: "us-east-1"
+
+      - name: Upload package to S3 bucket
+        run: aws s3 cp target/maven-web-app.war s3://elasticbeanstalk-maven/
+
+      - name: Create new ElasticBeanstalk Application Version
+        run: |
+          aws elasticbeanstalk create-application-version \
+          --application-name githubactions_env_mavenwebapp \
+          --source-bundle S3Bucket="elasticbeanstalk-maven",S3Key="maven-web-app.war" \
+          --version-label "ver-${{ github.sha }}" \
+          --description "commit-sha-${{ github.sha }}"
+
+      - name: Deploy new ElasticBeanstalk Application Version
+        run: aws elasticbeanstalk update-environment --environment-name Githubactionsenvmavenwebapp-dev --version-label "ver-${{ github.sha }}"
