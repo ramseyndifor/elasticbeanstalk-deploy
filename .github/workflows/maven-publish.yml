@@ -1,23 +1,16 @@
-name: Elastic Beanstalk Deployment
-on:
-  push:
-    branches:
-    - main
-    
+name: Publish package to GitHub Packages
+on: push
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  publish:
+    runs-on: ubuntu-latest 
+    permissions: 
+      contents: read
+      packages: write 
     steps:
-    
-    - name: Checkout source code
-      uses: actions/checkout@v1
-      
-    - name: Elastic Beanstalk Deployment
-      uses: kumarshivam12/Aws-ElasticBeanstalk@v1.3
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-        EB-BUCKET-NAME: elasticbeanstalk-maven
-        APPLICATION-NAME: elasticbeanstalk-application
-        EB-ENV-NAME: maven-web-app
-        AWS-REGION: us-west-2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Install with Maven
+        run: mvn install
