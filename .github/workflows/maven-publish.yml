@@ -12,5 +12,5 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      - name: Install with Maven
-        run: mvn install
+      - name: Package with Maven
+        run: mvn package
