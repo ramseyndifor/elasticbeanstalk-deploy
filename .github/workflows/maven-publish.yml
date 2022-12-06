@@ -17,7 +17,7 @@ jobs:
       - name: Deploy to AWS Elastic Beanstalk
         uses: Amraneze/aws-beanstalk-deploy@master
         with:
-          region: us-west-2
+          region: us-east-2
           environment_name: elastic-beanstalk-application
           application_name: maven-app
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
