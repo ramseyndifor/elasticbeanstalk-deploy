@@ -24,4 +24,4 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
           s3_bucket_name: elasticbeanstalk-maven
           s3_file_path: target/maven-web-app.war
-          ebs_version_label: 1.0.0
+          ebs_version_label: 2.0.0
