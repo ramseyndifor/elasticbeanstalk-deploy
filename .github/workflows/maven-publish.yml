@@ -20,18 +20,18 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-region: "us-west-2"
+          aws-region: "us-east-1"
 
       - name: Upload package to S3 bucket
-        run: aws s3 cp target/maven-web-app.war s3://elasticbeanstalk-maven/
+        run: aws s3 cp target/maven-web-app.war s3://xashyapp/
 
       - name: Create new ElasticBeanstalk Application Version
         run: |
           aws elasticbeanstalk create-application-version \
-          --application-name githubactions_env_mavenwebapp \
-          --source-bundle S3Bucket="elasticbeanstalk-maven",S3Key="maven-web-app.war" \
+          --application-name xashy \
+          --source-bundle S3Bucket="xashyapp",S3Key="maven-web-app.war" \
           --version-label "ver-${{ github.sha }}" \
           --description "commit-sha-${{ github.sha }}"
 
       - name: Deploy new ElasticBeanstalk Application Version
-        run: aws elasticbeanstalk update-environment --environment-name Githubactionsenvmavenwebapp-dev --version-label "ver-${{ github.sha }}"
+        run: aws elasticbeanstalk update-environment --environment-name xashy-env --version-label "ver-${{ github.sha }}"
